@@ -6,16 +6,18 @@
  * 1. Read over the code that follows. What will be printed to the console when
  *    it runs? Run the code using `node challenge2.js` and verify that your
  *    expectation was correct.
- * 
+ *        The output will be:
+ *        Hello there, Ducky
+ *        MAKE SCHOOL IS AWESOME!!!
  * 
  * 2. What happens if greet() fails? Make it fail by changing 'name' to a number
  *    instead of a string. What happens? Does uppercaser() still run?
- * 
+ *        When greet() fails, the console.log() within .catch() runs and then the error related to greet() is outputted to the console as well.
  * 
  * 3. What happens if greet() succeeds and uppercaser() fails? Modify your code
  *    to achieve this result by changing the values of 'name' and 'my_str' and
  *    run the code again.
- * 
+ *        The resolve() of greet() runs but when uppercase() is run, .catch() is run along with uppercaser's error message
  * 
  * 4. Write a method that takes a string as input and returns the input string
  *    with a space added between each character. E.g. 'foo' -> 'f o o'
@@ -63,8 +65,24 @@ function uppercaser(str) {
     });
 }
 
-name = 'Ducky'
-my_str = 'Make School is Awesome!!!'
+function spacer(str) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      if (typeof str === 'string') {
+        let spaced_str = ''
+        for(i=0;i<str.length;i++){
+          spaced_str += str[i] + ' '
+        }
+        resolve(spaced_str)
+      } else {
+        reject('Input must be a string!')
+      }
+    }, 1000)
+  })
+}
+
+name = 'Johnny'
+my_str = 'lorem ipsum' 
 
 greet(name)
     .then((greetResult) => {
@@ -73,7 +91,12 @@ greet(name)
     })
     .then((uppercaserResult) => {
         console.log(uppercaserResult)
-    }).catch((err) => {
+        return spacer(my_str)
+    })
+    .then((spacerResult) => {
+        console.log(spacerResult)
+    })
+    .catch((err) => {
         console.log('Received an error!')
         console.log(err);
     });
